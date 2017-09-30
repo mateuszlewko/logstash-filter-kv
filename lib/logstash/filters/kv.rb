@@ -286,8 +286,8 @@ class LogStash::Filters::KV < LogStash::Filters::Base
       )
     end
 
-    @trim_value_re = Regexp.new("^[#{@trim_value}]|[#{@trim_value}]$") if @trim_value
-    @trim_key_re = Regexp.new("^[#{@trim_key}]|[#{@trim_key}]$") if @trim_key
+    @trim_value_re = Regexp.new("^#{@trim_value}|#{@trim_value}$") if @trim_value
+    @trim_key_re = Regexp.new("^#{@trim_key}|#{@trim_key}$") if @trim_key
 
     @remove_char_value_re = Regexp.new("[#{@remove_char_value}]") if @remove_char_value
     @remove_char_key_re = Regexp.new("[#{@remove_char_key}]") if @remove_char_key
@@ -296,7 +296,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
     valueRxString += "|\\(([^\\)]+)\\)|\\[([^\\]]+)\\]|<([^>]+)>" if @include_brackets
     valueRxString += "|((?:\\\\ |[^" + @field_split + "])+))"
     @scan_re = Regexp.new("((?:\\\\ |[^" + @field_split + @value_split + "])+)\s*[" + @value_split + "]\s*" + valueRxString)
-    @value_split_re = /[#{@value_split}]/
+    @value_split_re = /#{@value_split}/
   end
 
   def filter(event)
