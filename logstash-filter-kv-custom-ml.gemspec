@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 
-  s.name            = 'logstash-filter-kv'
+  s.name            = 'logstash-filter-kv-custom-ml'
   s.version         = '4.0.2'
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "This filter helps automatically parse messages (or specific event fields) which are of the 'foo=bar' variety."
