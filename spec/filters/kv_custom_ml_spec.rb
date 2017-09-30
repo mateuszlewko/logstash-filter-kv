@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require "logstash/devutils/rspec/spec_helper"
-require "logstash/filters/kv"
+require "logstash/filters/kv_custom_ml"
 
 describe LogStash::Filters::KV do
 
@@ -10,7 +10,7 @@ describe LogStash::Filters::KV do
     # At this time, only filters are supported.
     config <<-CONFIG
       filter {
-        kv { }
+        kv_custom_ml { }
       }
     CONFIG
 
@@ -29,7 +29,7 @@ describe LogStash::Filters::KV do
   describe  "test transforming keys to uppercase and values to lowercase" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml {
           transform_key => "uppercase"
           transform_value => "lowercase"
         }
@@ -49,7 +49,7 @@ describe LogStash::Filters::KV do
   describe  "test transforming keys to lowercase and values to uppercase" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml {
           transform_key => "lowercase"
           transform_value => "uppercase"
         }
@@ -69,7 +69,7 @@ describe LogStash::Filters::KV do
   describe  "test transforming keys and values to capitals" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml {
           transform_key => "capitalize"
           transform_value => "capitalize"
         }
@@ -89,7 +89,7 @@ describe LogStash::Filters::KV do
   describe  "test spaces attached to the field_split" do
     config <<-CONFIG
       filter {
-        kv { }
+        kv_custom_ml { }
       }
     CONFIG
 
@@ -106,7 +106,7 @@ describe LogStash::Filters::KV do
    describe "LOGSTASH-624: allow escaped space in key or value " do
     config <<-CONFIG
       filter {
-        kv { value_split => ':' }
+        kv_custom_ml { value_split => ':' }
       }
     CONFIG
 
@@ -120,7 +120,7 @@ describe LogStash::Filters::KV do
     context "using an alternate splitter" do
       config <<-CONFIG
         filter {
-          kv { value_split => ':' }
+          kv_custom_ml { value_split => ':' }
         }
       CONFIG
 
@@ -224,7 +224,7 @@ describe LogStash::Filters::KV do
   describe "test field_split" do
     config <<-CONFIG
       filter {
-        kv { field_split => '?&' }
+        kv_custom_ml field_split => '?&' }
       }
     CONFIG
 
@@ -241,7 +241,7 @@ describe LogStash::Filters::KV do
   describe "test include_brackets is false" do
     config <<-CONFIG
       filter {
-        kv { include_brackets => "false" }
+        kv_custom_ml include_brackets => "false" }
       }
     CONFIG
 
@@ -254,7 +254,7 @@ describe LogStash::Filters::KV do
   describe "test recursive" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           recursive => 'true'
         }
       }
@@ -271,7 +271,7 @@ describe LogStash::Filters::KV do
   describe  "delimited fields should override space default (reported by LOGSTASH-733)" do
     config <<-CONFIG
       filter {
-        kv { field_split => "|" }
+        kv_custom_ml field_split => "|" }
       }
     CONFIG
 
@@ -285,7 +285,7 @@ describe LogStash::Filters::KV do
   describe "test prefix" do
     config <<-CONFIG
       filter {
-        kv { prefix => '__' }
+        kv_custom_ml prefix => '__' }
       }
     CONFIG
 
@@ -311,7 +311,7 @@ describe LogStash::Filters::KV do
       }
 
       filter {
-        kv { }
+        kv_custom_ml }
       }
 
       output  {
@@ -330,7 +330,7 @@ describe LogStash::Filters::KV do
     context "should activate when successful" do
       config <<-CONFIG
         filter {
-          kv { add_tag => "hello" }
+          kv_custom_ml add_tag => "hello" }
         }
       CONFIG
 
@@ -342,7 +342,7 @@ describe LogStash::Filters::KV do
     context "should not activate when failing" do
       config <<-CONFIG
         filter {
-          kv { add_tag => "hello" }
+          kv_custom_ml add_tag => "hello" }
         }
       CONFIG
 
@@ -356,7 +356,7 @@ describe LogStash::Filters::KV do
     context "should activate when successful" do
       config <<-CONFIG
         filter {
-          kv { add_field => [ "whoa", "fancypants" ] }
+          kv_custom_ml add_field => [ "whoa", "fancypants" ] }
         }
       CONFIG
 
@@ -369,7 +369,7 @@ describe LogStash::Filters::KV do
     context "should not activate when failing" do
       config <<-CONFIG
         filter {
-          kv { add_tag => "hello" }
+          kv_custom_ml add_tag => "hello" }
         }
       CONFIG
 
@@ -383,7 +383,7 @@ describe LogStash::Filters::KV do
   describe "test target" do
     config <<-CONFIG
       filter {
-        kv { target => 'kv' }
+        kv_custom_ml target => 'kv' }
       }
     CONFIG
 
@@ -401,7 +401,7 @@ describe LogStash::Filters::KV do
   describe "test empty target" do
     config <<-CONFIG
       filter {
-        kv { target => 'kv' }
+        kv_custom_ml target => 'kv' }
       }
     CONFIG
 
@@ -414,7 +414,7 @@ describe LogStash::Filters::KV do
   describe "test data from specific sub source" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "data"
         }
       }
@@ -431,7 +431,7 @@ describe LogStash::Filters::KV do
   describe "test data from specific top source" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "@data"
         }
       }
@@ -449,7 +449,7 @@ describe LogStash::Filters::KV do
   describe "test data from specific sub source and target" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "data"
           target => "kv"
         }
@@ -468,7 +468,7 @@ describe LogStash::Filters::KV do
   describe "test data from nil sub source, should not issue a warning" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "non-exisiting-field"
           target => "kv"
         }
@@ -483,7 +483,7 @@ describe LogStash::Filters::KV do
   describe "test include_keys" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           include_keys => [ "foo", "singlequoted" ]
         }
       }
@@ -498,7 +498,7 @@ describe LogStash::Filters::KV do
   describe "test exclude_keys" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           exclude_keys => [ "foo", "singlequoted" ]
         }
       }
@@ -514,7 +514,7 @@ describe LogStash::Filters::KV do
   describe "test include_keys with prefix" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           include_keys => [ "foo", "singlequoted" ]
           prefix       => "__"
         }
@@ -530,7 +530,7 @@ describe LogStash::Filters::KV do
   describe "test exclude_keys with prefix" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           exclude_keys => [ "foo", "singlequoted" ]
           prefix       => "__"
         }
@@ -547,7 +547,7 @@ describe LogStash::Filters::KV do
   describe "test include_keys with dynamic key" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "data"
           include_keys => [ "%{key}"]
         }
@@ -563,7 +563,7 @@ describe LogStash::Filters::KV do
   describe "test exclude_keys with dynamic key" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "data"
           exclude_keys => [ "%{key}"]
         }
@@ -579,7 +579,7 @@ describe LogStash::Filters::KV do
   describe "test include_keys and exclude_keys" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           # This should exclude everything as a result of both settings.
           include_keys => [ "foo", "singlequoted" ]
           exclude_keys => [ "foo", "singlequoted" ]
@@ -597,7 +597,7 @@ describe LogStash::Filters::KV do
   describe "test default_keys" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           default_keys => [ "foo", "xxx",
                             "goo", "yyy" ]
         }
@@ -617,7 +617,7 @@ describe LogStash::Filters::KV do
   describe "overwriting a string field (often the source)" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           source => "happy"
           target => "happy"
         }
@@ -634,7 +634,7 @@ describe LogStash::Filters::KV do
   describe "Removing duplicate key/value pairs" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           field_split => "&"
           source => "source"
           allow_duplicate_values => false
@@ -650,7 +650,7 @@ describe LogStash::Filters::KV do
   describe "Allow duplicate key/value pairs by default" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           field_split => "&"
           source => "source"
         }
@@ -761,7 +761,7 @@ describe LogStash::Filters::KV do
   describe "an empty value_split option should be reported" do
     config <<-CONFIG
       filter {
-        kv {
+        kv_custom_ml
           value_split => ""
         }
       }

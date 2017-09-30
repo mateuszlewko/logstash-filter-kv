@@ -10,7 +10,7 @@ require "logstash/namespace"
 # error=REFUSED`, you can parse those automatically by configuring:
 # [source,ruby]
 #     filter {
-#       kv { }
+#       kv_custom_ml }
 #     }
 #
 # The above will result in a message of `ip=1.2.3.4 error=REFUSED` having
@@ -27,7 +27,7 @@ require "logstash/namespace"
 # For example, this filter can also be used to parse query parameters like
 # `foo=bar&baz=fizz` by setting the `field_split` parameter to `&`.
 class LogStash::Filters::KV < LogStash::Filters::Base
-  config_name "kv"
+  config_name "kv_custom_ml"
 
   # Constants used for transform check
   TRANSFORM_LOWERCASE_KEY = "lowercase"
@@ -46,7 +46,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to trim `<`, `>`, `[`, `]` and `,` characters from values:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         trim_value => "<>\[\],"
   #       }
   #     }
@@ -63,7 +63,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to trim `<` `>` `[` `]` and `,` characters from keys:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         trim_key => "<>\[\],"
   #       }
   #     }
@@ -79,7 +79,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to remove `<`, `>`, `[`, `]` and `,` characters from values:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         remove_char_value => "<>\[\],"
   #       }
   #     }
@@ -95,7 +95,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to remove `<` `>` `[` `]` and `,` characters from keys:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         remove_char_key => "<>\[\],"
   #       }
   #     }
@@ -106,7 +106,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to capitalize all values:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         transform_value => "capitalize"
   #       }
   #     }
@@ -117,7 +117,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to lowercase all keys:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         transform_key => "lowercase"
   #       }
   #     }
@@ -134,7 +134,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # `?pin=12345~0&d=123&e=foo@bar.com&oq=bobo&ss=12345`:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         field_split => "&?"
   #       }
   #     }
@@ -158,21 +158,21 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # For example, to identify key-values such as
   # `key1:value1 key2:value2`:
   # [source,ruby]
-  #     filter { kv { value_split => ":" } }
+  #     filter { kv_custom_ml value_split => ":" } }
   config :value_split, :validate => :string, :default => '='
 
   # A string to prepend to all of the extracted keys.
   #
   # For example, to prepend arg_ to all keys:
   # [source,ruby]
-  #     filter { kv { prefix => "arg_" } }
+  #     filter { kv_custom_ml prefix => "arg_" } }
   config :prefix, :validate => :string, :default => ''
 
   # The field to perform `key=value` searching on
   #
   # For example, to process the `not_the_message` field:
   # [source,ruby]
-  #     filter { kv { source => "not_the_message" } }
+  #     filter { kv_custom_ml source => "not_the_message" } }
   config :source, :validate => :string, :default => "message"
 
   # The name of the container to put all of the key-value pairs into.
@@ -182,7 +182,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   #
   # For example, to place all keys into the event field kv:
   # [source,ruby]
-  #     filter { kv { target => "kv" } }
+  #     filter { kv_custom_ml target => "kv" } }
   config :target, :validate => :string
 
   # An array specifying the parsed keys which should be added to the event.
@@ -192,7 +192,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # To include `from` and `to`, but exclude the `foo` key, you could use this configuration:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         include_keys => [ "from", "to" ]
   #       }
   #     }
@@ -205,7 +205,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # To exclude `from` and `to`, but retain the `foo` key, you could use this configuration:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         exclude_keys => [ "from", "to" ]
   #       }
   #     }
@@ -215,7 +215,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # in case these keys do not exist in the source field being parsed.
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         default_keys => [ "from", "logstash@example.com",
   #                          "to", "default@dev.null" ]
   #       }
@@ -230,7 +230,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # you could use this configuration:
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         allow_duplicate_values => false
   #       }
   #     }
@@ -240,7 +240,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # and parentheses as value "wrappers" that should be removed from the value.
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         include_brackets => true
   #       }
   #     }
@@ -269,7 +269,7 @@ class LogStash::Filters::KV < LogStash::Filters::Base
   # Default is not to recursive values.
   # [source,ruby]
   #     filter {
-  #       kv {
+  #       kv_custom_ml
   #         recursive => "true"
   #       }
   #     }

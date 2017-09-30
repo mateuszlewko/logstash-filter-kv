@@ -27,7 +27,7 @@ For example, if you have a log message which contains `ip=1.2.3.4
 error=REFUSED`, you can parse those automatically by configuring:
 [source,ruby]
     filter {
-      kv { }
+      kv_custom_ml }
     }
 
 The above will result in a message of `ip=1.2.3.4 error=REFUSED` having
@@ -90,7 +90,7 @@ an Array with two elements: `["me", "me"]`. To only keep unique key/value pairs,
 you could use this configuration:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         allow_duplicate_values => false
       }
     }
@@ -105,7 +105,7 @@ A hash specifying the default keys and their values which should be added to the
 in case these keys do not exist in the source field being parsed.
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         default_keys => [ "from", "logstash@example.com",
                          "to", "default@dev.null" ]
       }
@@ -124,7 +124,7 @@ For example, consider a source like `Hey, from=<abc>, to=def foo=bar`.
 To exclude `from` and `to`, but retain the `foo` key, you could use this configuration:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         exclude_keys => [ "from", "to" ]
       }
     }
@@ -146,7 +146,7 @@ For example, to split out the args from a url query string such as
 `?pin=12345~0&d=123&e=foo@bar.com&oq=bobo&ss=12345`:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         field_split => "&?"
       }
     }
@@ -170,7 +170,7 @@ A boolean specifying whether to treat square brackets, angle brackets,
 and parentheses as value "wrappers" that should be removed from the value.
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         include_brackets => true
       }
     }
@@ -204,7 +204,7 @@ For example, consider a source like `Hey, from=<abc>, to=def foo=bar`.
 To include `from` and `to`, but exclude the `foo` key, you could use this configuration:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         include_keys => [ "from", "to" ]
       }
     }
@@ -219,7 +219,7 @@ A string to prepend to all of the extracted keys.
 
 For example, to prepend arg_ to all keys:
 [source,ruby]
-    filter { kv { prefix => "arg_" } }
+    filter { kv_custom_ml prefix => "arg_" } }
 
 [id="plugins-{type}s-{plugin}-recursive"]
 ===== `recursive` 
@@ -234,7 +234,7 @@ The extra key-value pairs will be stored as subkeys of the root key.
 Default is not to recursive values.
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         recursive => "true"
       }
     }
@@ -256,7 +256,7 @@ Contrary to trim option, all characters are removed from the key, whatever their
 For example, to remove `<` `>` `[` `]` and `,` characters from keys:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         remove_char_key => "<>\[\],"
       }
     }
@@ -277,7 +277,7 @@ Contrary to trim option, all characters are removed from the value, whatever the
 For example, to remove `<`, `>`, `[`, `]` and `,` characters from values:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         remove_char_value => "<>\[\],"
       }
     }
@@ -292,7 +292,7 @@ The field to perform `key=value` searching on
 
 For example, to process the `not_the_message` field:
 [source,ruby]
-    filter { kv { source => "not_the_message" } }
+    filter { kv_custom_ml source => "not_the_message" } }
 
 [id="plugins-{type}s-{plugin}-target"]
 ===== `target` 
@@ -307,7 +307,7 @@ event, as individual fields.
 
 For example, to place all keys into the event field kv:
 [source,ruby]
-    filter { kv { target => "kv" } }
+    filter { kv_custom_ml target => "kv" } }
 
 [id="plugins-{type}s-{plugin}-transform_key"]
 ===== `transform_key` 
@@ -320,7 +320,7 @@ Transform keys to lower case, upper case or capitals.
 For example, to lowercase all keys:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         transform_key => "lowercase"
       }
     }
@@ -336,7 +336,7 @@ Transform values to lower case, upper case or capitals.
 For example, to capitalize all values:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         transform_value => "capitalize"
       }
     }
@@ -358,7 +358,7 @@ Only leading and trailing characters are trimed from the key.
 For example, to trim `<` `>` `[` `]` and `,` characters from keys:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         trim_key => "<>\[\],"
       }
     }
@@ -382,7 +382,7 @@ Only leading and trailing characters are trimed from the value.
 For example, to trim `<`, `>`, `[`, `]` and `,` characters from values:
 [source,ruby]
     filter {
-      kv {
+      kv_custom_ml
         trim_value => "<>\[\],"
       }
     }
@@ -401,7 +401,7 @@ characters like `[` or `]` using `\`.
 For example, to identify key-values such as
 `key1:value1 key2:value2`:
 [source,ruby]
-    filter { kv { value_split => ":" } }
+    filter { kv_custom_ml value_split => ":" } }
 
 
 
