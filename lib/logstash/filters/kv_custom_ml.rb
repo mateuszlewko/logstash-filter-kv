@@ -296,10 +296,6 @@ class LogStash::Filters::KV < LogStash::Filters::Base
     valueRxString += "|\\(([^\\)]+)\\)|\\[([^\\]]+)\\]|<([^>]+)>" if @include_brackets
     valueRxString += "|((?:\\\\ |[^" + @field_split + "])+))"
     @scan_re = Regexp.new("((?:\\\\ |[^" + @field_split + @value_split + "])+)\s*" + @value_split + "\s*" + valueRxString)
-    
-    @logger.info("REGISTER_KV")
-    @logger.info("((?:\\\\ |^" + @field_split + @value_split + ")+)\s*" + @value_split + "\s*" + valueRxString)
-
     @value_split_re = /#{@value_split}/
   end
 
